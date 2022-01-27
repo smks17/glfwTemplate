@@ -18,7 +18,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if(!success){
         glGetShaderInfoLog(vertexShader, 512, NULL, error);
-        std::cout<<"ERROR SHADER: " << error << std::endl;
+        std::cout<<"ERROR Vertex SHADER: " << error << std::endl;
         exit(1);
     }
     std::cout << "INFO, vertexShader is compieled!" << std::endl;
@@ -31,7 +31,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if(!success){
         glGetShaderInfoLog(fragmentShader, 512, NULL, error);
-        std::cout<<"ERROR SHADER2: " << error << std::endl;
+        std::cout<<"ERROR Vertex SHADER: " << error << std::endl;
         exit(1);
     }
     std::cout << "INFO, fragmentShader is compieled!" << std::endl;
