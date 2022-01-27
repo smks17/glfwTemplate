@@ -8,7 +8,7 @@ project(glfwTest)
 
 find_package(OpenGL REQUIRED)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp shader.h shader.cpp)
 
 
 target_include_directories(${PROJECT_NAME}
