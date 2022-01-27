@@ -40,17 +40,20 @@ int main(void)
 
     glfwSetFramebufferSizeCallback(window, frameBufferCallback);
 
-    //unsigned int shader = shadeCompile();
-    Shader * shader = new Shader("vertexShader.glsl", "fragmentShader.glsl");
-    
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left  (x=-1,y=0 : x=0,y=-1)
-         0.5f, -0.5f, 0.0f, // right (x=0,y=-1 : x=1,y=0)
-         0.0f,  0.5f, 0.0f  // top   (x=0,y=1)
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left 
     };
- 
+
+    unsigned int indices[] = {
+        0, 1, 3,   // first triangle
+        1, 2, 3    // second triangle
+    };  
+
     // set buffers vertex buffer object anb vertex array object
-    unsigned int VBO, VAO;
+    unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
      
@@ -65,10 +68,18 @@ int main(void)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
  
+    // set element buffer object
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
     // unbind the VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    Shader * shader = new Shader("vertexShader.glsl", "fragmentShader.glsl");
     
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -76,10 +87,10 @@ int main(void)
         glClearColor(0.2f, 0.3f, 0.3f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
         shader->use();
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
