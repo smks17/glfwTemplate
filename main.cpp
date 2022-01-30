@@ -18,12 +18,14 @@ void processInput(GLFWwindow *window){
     }
 }
 
-void loadImage_and_bindTexture(const char * jpegFilename){
+void loadImage_and_bindTexture(const char * jpegFilename, bool isFlip = true){
     int width, height, nrChannels;
-    unsigned char * data = stbi_load("texture.jpg", &width, &height, &nrChannels, 0);
+    stbi_set_flip_vertically_on_load(isFlip);  
+    unsigned char * data = stbi_load(jpegFilename, &width, &height, &nrChannels, 0);
     if(data){
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+        std::cout << "INFO, texture is read!" << std::endl;
     }
     else{
         std::cerr << "ERROR! can not load image!" << std::endl;
@@ -116,7 +118,7 @@ int main(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-    loadImage_and_bindTexture("texture.jpg");
+    loadImage_and_bindTexture("smile.jpg");
 
     Shader * shader = new Shader("vertexShader.glsl", "fragmentShader.glsl");
      

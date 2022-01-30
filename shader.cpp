@@ -21,7 +21,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
         std::cout<<"ERROR Vertex SHADER: " << error << std::endl;
         exit(1);
     }
-    std::cout << "INFO, vertexShader is compieled!" << std::endl;
+    std::cout << "INFO, vertexShader is compiled!" << std::endl;
 
     unsigned int fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -34,7 +34,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
         std::cout<<"ERROR Vertex SHADER: " << error << std::endl;
         exit(1);
     }
-    std::cout << "INFO, fragmentShader is compieled!" << std::endl;
+    std::cout << "INFO, fragmentShader is compiled!" << std::endl;
 
     // link the shaderProgram
     shaderProgram = glCreateProgram();
@@ -53,7 +53,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
 const char * Shader::readShaderSource(const char * filename){
     std::ifstream file(filename, std::ios::in);
     if (!file.is_open()){
-        std::cerr << "ERROR! file does not exist!" << std::endl;
+        std::cerr << "ERROR! shader file does not exist: " << filename << std::endl;
         exit(1);
     }
     file.seekg(0,std::ios::end);
