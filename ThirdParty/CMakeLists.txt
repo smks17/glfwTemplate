@@ -10,7 +10,7 @@ set(GLFW_INSTALL        OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(${GLFW_LIB_NAME})
 
-# add_subdirectory(glm)
+add_subdirectory(glm)
 
 # Glad
 set(GLAD_LIB_NAME "glad")

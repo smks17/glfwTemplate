@@ -13,6 +13,7 @@ class Shader{
         void deleteShader();
         const char* readShaderSource(const char * filename);
         Shader * reload(const char* _vertextFile, const char * _fragmentFile);
+        unsigned int getID(){ return shaderProgram; }
 };
 
 #endif /* SAHDER_H */

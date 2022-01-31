@@ -10,7 +10,7 @@ project(glfwTest)
 find_package(OpenGL REQUIRED)
 
 file(GLOB SOURCES *.cpp)
-file(GLOB HEADERS *.cpp)
+file(GLOB HEADERS *.h)
 
 # copy all resources to build folder (optional)
 # 
@@ -44,6 +44,7 @@ target_link_libraries(${PROJECT_NAME}
     ${OPENGL_gl_LIBRARY}
     glfw
     glad
+    glm
 )
 
 add_subdirectory(ThirdParty)
