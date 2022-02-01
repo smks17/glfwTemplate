@@ -12,15 +12,24 @@ find_package(OpenGL REQUIRED)
 file(GLOB SOURCES *.cpp)
 file(GLOB HEADERS *.cpp)
 
-# copy resources to binary directory
-file(GLOB RESOURCES resources/* )
-foreach(RESOURCE IN LISTS RESOURCES)
-    configure_file(
-        ${RESOURCE}
-        "${CMAKE_CURRENT_BINARY_DIR}/" COPYONLY
-      )
-endForeach()
-message("-- Resources is copied!")
+# copy all resources to build folder (optional)
+# 
+# file(GLOB RESOURCES resources/* )
+# foreach(RESOURCE IN LISTS RESOURCES)
+#     configure_file(
+#         ${RESOURCE}
+#         "${CMAKE_CURRENT_BINARY_DIR}/" COPYONLY
+#       )
+# endForeach()
+# message("-- Resources is copied!")
+
+
+# copy .conf file to build folder (optional)
+#
+# configure_file(
+#         ./glfw.conf
+#         "${CMAKE_CURRENT_BINARY_DIR}/" COPYONLY
+#         )
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
 

@@ -8,8 +8,10 @@
 int success;
 char error[512];
 
-Shader::Shader(const char* vertextFile, const char * fragmentFile){
-   unsigned int vertexShader;
+Shader::Shader(const char* _vertextFile, const char * _fragmentFile):
+vertextFile(_vertextFile), fragmentFile(_fragmentFile)
+{    
+    unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
     const char * vertexShaderSource = readShaderSource(vertextFile);
@@ -19,7 +21,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
     if(!success){
         glGetShaderInfoLog(vertexShader, 512, NULL, error);
         std::cout<<"ERROR Vertex SHADER: " << error << std::endl;
-        exit(1);
+        // exit(1);
     }
     std::cout << "INFO, vertexShader is compiled!" << std::endl;
 
@@ -32,7 +34,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
     if(!success){
         glGetShaderInfoLog(fragmentShader, 512, NULL, error);
         std::cout<<"ERROR Vertex SHADER: " << error << std::endl;
-        exit(1);
+        // exit(1);
     }
     std::cout << "INFO, fragmentShader is compiled!" << std::endl;
 
@@ -46,7 +48,7 @@ Shader::Shader(const char* vertextFile, const char * fragmentFile){
     if(!success){
         glGetShaderInfoLog(fragmentShader, 512, NULL, error);
         std::cout<<"ERROR SHADER LINK: " << error << std::endl;
-        exit(1);
+        // exit(1);
     }
 }
 
@@ -54,7 +56,7 @@ const char * Shader::readShaderSource(const char * filename){
     std::ifstream file(filename, std::ios::in);
     if (!file.is_open()){
         std::cerr << "ERROR! shader file does not exist: " << filename << std::endl;
-        exit(1);
+        // exit(1);
     }
     file.seekg(0,std::ios::end);
     unsigned int length = file.tellg();
@@ -67,10 +69,21 @@ const char * Shader::readShaderSource(const char * filename){
     return buffer;
 }
 
+Shader::~Shader(){
+    deleteShader();
+}
+
 void Shader::use(){
     glUseProgram(shaderProgram);
 }
 
-Shader::~Shader(){
+void Shader::deleteShader(){
     glDeleteProgram(shaderProgram);
+}
+
+Shader * Shader::reload(const char* _vertextFile, const char * _fragmentFile){
+    //deleteShader();
+    Shader * newShader = new Shader(_vertextFile, _fragmentFile);
+    newShader->use();
+    return newShader;
 }

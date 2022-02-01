@@ -7,14 +7,32 @@
 #include "stb_image.h"
 
 #include "shader.h"
+#include "config.h"
+
+Config * config;
+std::string vertexFileName;
+std::string fragmentFileName;
+std::string textureFileName;
+
+void updateConfig(){
+    if(!config)
+        config = new Config("../glfw.conf");
+    vertexFileName = config->get("vertex.shader.source");
+    fragmentFileName = config->get("fragment.shader.source");
+    textureFileName = config->get("texture.source");
+}
 
 void frameBufferCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow *window){
+void processInput(GLFWwindow *window, Shader * shader){
     if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
+    }
+    else if(glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS){
+        updateConfig();
+        shader = shader->reload(vertexFileName.c_str(), fragmentFileName.c_str());
     }
 }
 
@@ -36,6 +54,8 @@ void loadImage_and_bindTexture(const char * jpegFilename, bool isFlip = true){
 
 int main(void)
 {
+    updateConfig();
+
     GLFWwindow* window;
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -118,12 +138,13 @@ int main(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-    loadImage_and_bindTexture("smile.jpg");
+    loadImage_and_bindTexture(textureFileName.c_str());
 
-    Shader * shader = new Shader("vertexShader.glsl", "fragmentShader.glsl");
+    //Shader * shader = new Shader("vertexShader.glsl", "fragmentShader.glsl");
+    Shader * shader = new Shader(vertexFileName.c_str(), fragmentFileName.c_str());
      
     while (!glfwWindowShouldClose(window)) {
-        processInput(window);
+        processInput(window , shader);
 
         glClearColor(0.2f, 0.3f, 0.3f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT);
