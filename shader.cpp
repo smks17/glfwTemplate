@@ -59,7 +59,7 @@ const char * Shader::readShaderSource(const char * filename){
         // exit(1);
     }
     file.seekg(0,std::ios::end);
-    unsigned int length = file.tellg();
+    std::streampos length = file.tellg();
     file.seekg(0,std::ios::beg);
 
     char * buffer = new char[length];

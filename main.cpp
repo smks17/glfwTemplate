@@ -4,10 +4,12 @@
 #include <GLFW/glfw3.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "ThirdParty/stb_image.h"
 
 #include "shader.h"
 #include "config.h"
+
+#define UNREFERENCED_PARAMETER(x) x
 
 Config * config;
 std::string vertexFileName;
@@ -23,6 +25,7 @@ void updateConfig(){
 }
 
 void frameBufferCallback(GLFWwindow* window, int width, int height) {
+    UNREFERENCED_PARAMETER(window);
     glViewport(0, 0, width, height);
 }
 

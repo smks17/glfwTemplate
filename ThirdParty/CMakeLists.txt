@@ -19,14 +19,14 @@ set(GLAD_INC_PATH "${GLAD_LIB_NAME}/include")
 
 add_library( ${GLAD_LIB_NAME}
     STATIC
-        "${GLAD_SRC_PATH}/glad.c"
-        glfw
-        glad
+    "${GLAD_SRC_PATH}/glad.c"
+    glfw
+    glad
 )
 
 target_include_directories(${GLAD_LIB_NAME}
     PUBLIC
-        "${GLAD_INC_PATH}"
-        glfw
-        glad
+    "${GLAD_INC_PATH}"
+    glfw
+    glad
 )

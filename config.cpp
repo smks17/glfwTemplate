@@ -1,5 +1,3 @@
-#pragma once
-
 #include <fstream>
 #include <iostream>
 
@@ -7,14 +5,17 @@
     #include <Windows.h>
 
     std::string getProjectPath(){
-        wchar_t buffer[MAX_PATH] = { 0 };
-        std::string path;
+        wchar_t buffer[MAX_PATH] = {0};
         int position_slash = 0;
+        std::string path;
         GetModuleFileNameW(NULL, buffer, MAX_PATH);
         for (int i = 0; i < (sizeof(buffer) / sizeof(buffer[0])); i++) {
             if (buffer[i] == '/' || buffer[i] == '\\')
                 position_slash = i;
-            path += buffer[i];
+            char ch;
+            int ch_size = sizeof(ch);
+            wctomb_s(&ch_size, &ch, sizeof(buffer[i]), buffer[i]);
+            path += ch;
         }
         return path.substr(0, position_slash+1);
     }
@@ -70,7 +71,7 @@ std::string Config::search(std::string key){
         if(line.at(0) == '#')
             continue;
 
-        int pos = line.find("=");
+        size_t pos = line.find("=");
         std::string first = line.substr(0, pos);
         if(first == key){
             value = line.substr(pos + 1, line.size());
